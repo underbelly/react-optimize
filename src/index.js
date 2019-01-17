@@ -1,7 +1,6 @@
 import React from "react";
-import createReactContext from "create-react-context";
 
-const OptimizeContext = createReactContext();
+const OptimizeContext = React.createContext();
 
 export class Experiment extends React.Component {
   static defaultProps = {
@@ -42,18 +41,20 @@ export class Experiment extends React.Component {
       this.delayedInitialization();
     }
 
-    window.gtag && window.gtag("event", "optimize.callback", {
-      name: this.props.id,
-      callback: this.updateVariant
-    });
+    window.gtag &&
+      window.gtag("event", "optimize.callback", {
+        name: this.props.id,
+        callback: this.updateVariant
+      });
   }
 
   componentWillUnmount() {
-    window.gtag && window.gtag("event", "optimize.callback", {
-      name: this.props.id,
-      callback: this.updateVariant,
-      remove: true
-    });
+    window.gtag &&
+      window.gtag("event", "optimize.callback", {
+        name: this.props.id,
+        callback: this.updateVariant,
+        remove: true
+      });
   }
 
   render() {
@@ -75,7 +76,4 @@ export class Variant extends React.Component {
   }
 }
 
-export default {
-  Experiment,
-  Variant
-};
+export default { Experiment, Variant };
