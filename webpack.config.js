@@ -1,17 +1,17 @@
 const path = require("path");
 
-module.exports = {
-  mode: process.env.NODE_ENV === "production" ? "production" : "development",
+module.exports = env => ({
+  mode: env.production ? "production" : "development",
   entry: path.resolve(__dirname, "src/index.js"),
   output: {
-    path: path.resolve(__dirname, 'lib'),
+    path: path.resolve(__dirname, "lib"),
     filename: "react-optimize.js",
     library: "react-optimize",
-    libraryTarget: 'umd',
+    libraryTarget: "umd",
     umdNamedDefine: true
   },
   externals: {
-    react: 'react',
+    react: "react",
     "prop-types": "prop-types"
   },
   module: {
@@ -29,4 +29,4 @@ module.exports = {
       }
     ]
   }
-};
+});
