@@ -1,21 +1,38 @@
-import React from "react";
+import * as React from "react";
 
-const OptimizeContext = React.createContext();
+declare global {
+  interface Window {
+    google_optimize: any;
+    dataLayer: any;
+    gtag: any;
+  }
+}
 
-class Experiment extends React.Component {
-  static defaultProps = {
-    loader: null
+type Props = {
+  id?: string;
+  loader?: JSX.Element;
+};
+
+type State = Readonly<{
+  variant?: string;
+}>;
+
+const OptimizeContext = React.createContext<string | null>(null);
+
+class Experiment extends React.Component<Props, State> {
+  static defaultProps: Props = {
+    loader: null,
+    id: null
   };
 
-  state = {
+  state: State = {
     variant: null
   };
 
-  updateVariant = value => {
-    // if experiment not active, render original
-    this.setState({
+  updateVariant = (value: string | undefined | null) => {
+    this.setState(() => ({
       variant: value === undefined || value === null ? "0" : value
-    });
+    }));
   };
 
   delayedInitialization = () => {
