@@ -2,7 +2,7 @@ import React from "react";
 
 const OptimizeContext = React.createContext();
 
-export class Experiment extends React.Component {
+class Experiment extends React.Component {
   static defaultProps = {
     loader: null
   };
@@ -66,14 +66,10 @@ export class Experiment extends React.Component {
   }
 }
 
-export class Variant extends React.Component {
-  render() {
-    return (
-      <OptimizeContext.Consumer>
-        {value => (value === this.props.id ? this.props.children : null)}
-      </OptimizeContext.Consumer>
-    );
-  }
-}
+const Variant = () => (
+  <OptimizeContext.Consumer>
+    {value => (value === this.props.id ? this.props.children : null)}
+  </OptimizeContext.Consumer>
+);
 
-export default { Experiment, Variant };
+export { Experiment, Variant };
