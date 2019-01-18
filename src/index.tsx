@@ -2,9 +2,23 @@ import * as React from "react";
 
 declare global {
   interface Window {
-    google_optimize: any;
-    dataLayer: any;
-    gtag: any;
+    google_optimize?: {
+      get: (id: string) => string;
+    };
+    dataLayer: {
+      hide: {
+        end: () => void;
+      };
+    };
+    gtag: (
+      event: string,
+      callbackName: string,
+      callback: {
+        name: string;
+        callback: (value: string | undefined | null) => void;
+        remove?: boolean;
+      }
+    ) => void;
   }
 }
 
