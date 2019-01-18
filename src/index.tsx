@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-type Props = {
+type ExperimentProps = {
   id?: string;
   loader?: JSX.Element;
 };
@@ -33,8 +33,8 @@ type State = Readonly<{
 
 const OptimizeContext = React.createContext<string | null>(null);
 
-class Experiment extends React.Component<Props, State> {
-  static defaultProps: Props = {
+class Experiment extends React.Component<ExperimentProps, State> {
+  static defaultProps: ExperimentProps = {
     loader: null,
     id: null
   };
@@ -97,10 +97,25 @@ class Experiment extends React.Component<Props, State> {
   }
 }
 
-const Variant = () => (
-  <OptimizeContext.Consumer>
-    {value => (value === this.props.id ? this.props.children : null)}
-  </OptimizeContext.Consumer>
-);
+type VariantProps = {
+  id?: string;
+  children?: JSX.Element;
+};
 
-export { Experiment, Variant };
+const Variant = ({ id, children }: VariantProps) => {
+  if (typeof children === "undefined") {
+    throw new Error("Variant must have a child to test");
+  }
+
+  if (typeof id === "undefined") {
+    throw new Error("You must provide the variant a ID");
+  }
+
+  return (
+    <OptimizeContext.Consumer>
+      {value => (value === id ? children : null)}
+    </OptimizeContext.Consumer>
+  );
+};
+
+export { OptimizeContext, Experiment, Variant };
