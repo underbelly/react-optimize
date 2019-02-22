@@ -25,6 +25,7 @@ declare global {
 type ExperimentProps = {
   id?: string;
   loader?: JSX.Element;
+  updateCallback?: (object: { variant: string; experimentId: string }) => void;
 };
 
 type State = Readonly<{
@@ -44,9 +45,11 @@ class Experiment extends React.Component<ExperimentProps, State> {
   };
 
   updateVariant = (value: string | undefined | null) => {
-    this.setState(() => ({
-      variant: value === undefined || value === null ? "0" : value
-    }));
+    const variant = value === undefined || value === null ? "0" : value;
+    this.setState(
+      () => ({ variant }),
+      () => this.props.updateCallback({ variant, experimentId: this.props.id })
+    );
   };
 
   delayedInitialization = () => {
